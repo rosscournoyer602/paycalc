@@ -25,32 +25,32 @@ void file(Employee *head, char *filename) {
     Employee *current;  /*pointer to current node*/
     current=head;
     FILE *fp;
-
-    if (!(fp=fopen(filename,"r"))){
-		printf("cannot open %s for reading\n",filename); //Open filename
-        //perror();
-	}
+    printf ("%s", filename);
+ //    if (!(fp=fopen(filename,"r"))){
+	// 	printf("cannot open %s for reading\n",filename); //Open filename
+ //        //perror();
+	// }
 		
-	while (fscanf(fp,"%li %s %s %f %f",
-                &current->clockNumber,
-                &current->firstName,
-                &current->lastName,
-                &current->wage,
-                &current->hours) 
-             	&& !feof(fp))
-	{
-		current->next=(struct Employee *)malloc(sizeof(Employee));
-        current=current->next;
-    }
-    	current->next=(struct Employee *)NULL;
-        fclose(fp);
+// 	while (fscanf(fp,"%li %s %s %f %f",
+//                 &current->clockNumber,
+//                 &current->firstName,
+//                 &current->lastName,
+//                 &current->wage,
+//                 &current->hours) 
+//              	&& !feof(fp))
+// 	{
+// 		current->next=(struct Employee *)malloc(sizeof(Employee));
+//         current=current->next;
+//     }
+//     	current->next=(struct Employee *)NULL;
+//         fclose(fp);
 
-        otCalc(head);
-        grossCalc(head);
-        printList(head);
-        totalAvg(head);
+//         otCalc(head);
+//         grossCalc(head);
+//         printList(head);
+//         totalAvg(head);
+// }
 }
-
 void getHours (Employee *empl)
 {
     Employee *tmp;   /* tmp pointer value to current node */
@@ -204,18 +204,19 @@ int main (int argc, char** argv)
     else
         printf ("Usage: Paycalc -f [filename]\nor\nPaycalc\n");
     
-    switch(menu()) {
-        case 1:
-          printf ("Enter file name:\n");
-          scanf ("%s", &filename[0]);
-          file(head,filename);
-          break;
-        case 2:
-          manual(head);
-          break;
-        default:
-          printf ("Invalid usage.\n");
-          break;
+    for (;;) {
+        switch(menu()) {
+            case 1:
+              printf ("Enter file name:\n");
+              scanf ("%s", &filename[0]);
+              file(head,filename);
+              break;
+            case 2:
+              manual(head);
+              break;
+            default:
+              printf ("Invalid usage.\n");
+              break;
+          }
       }
-      menu();
 }
