@@ -20,62 +20,6 @@ int menu(void) {
     else return(choice);
     }
 
-void file(Employee *head, char *filename) {
-
-    Employee *current;  /*pointer to current node*/
-    current=head;
-    FILE *fp;
-    printf ("%s", filename);
- //    if (!(fp=fopen(filename,"r"))){
-	// 	printf("cannot open %s for reading\n",filename); //Open filename
- //        //perror();
-	// }
-		
-// 	while (fscanf(fp,"%li %s %s %f %f",
-//                 &current->clockNumber,
-//                 &current->firstName,
-//                 &current->lastName,
-//                 &current->wage,
-//                 &current->hours) 
-//              	&& !feof(fp))
-// 	{
-// 		current->next=(struct Employee *)malloc(sizeof(Employee));
-//         current=current->next;
-//     }
-//     	current->next=(struct Employee *)NULL;
-//         fclose(fp);
-
-//         otCalc(head);
-//         grossCalc(head);
-//         printList(head);
-//         totalAvg(head);
-// }
-}
-void getHours (Employee *empl)
-{
-    Employee *tmp;   /* tmp pointer value to current node */
-    
-    for(tmp = empl; tmp ; tmp = tmp->next)
-    {
-        printf ("\nEnter hours for employee %06li:  ", tmp -> clockNumber);
-        scanf ("%f", &tmp -> hours);
-    }
-}
-
-void grossCalc (Employee * empl)
-{
-    Employee *tmp;
-    
-    for(tmp = empl; tmp ; tmp = tmp->next) {
-        if (tmp -> hours >= STD_HOURS)
-            
-            tmp -> gross =
-            ((tmp -> wage) * STD_HOURS) + (OT_RATE * (tmp -> wage)) * (tmp -> overtime);
-        else
-            (tmp -> gross) = (tmp -> hours) * (tmp -> wage);
-    }
-}
-
 void manual(Employee *head) {
 
     Employee *current;
@@ -118,6 +62,62 @@ void manual(Employee *head) {
     grossCalc(head);
     printList(head);
     totalAvg(head);
+}
+
+void file(Employee *head, char *filename) {
+
+    Employee *current;  /*pointer to current node*/
+    current=head;
+    FILE *fp;
+
+    if (!(fp=fopen(filename,"r"))){
+		printf("cannot open %s for reading\n",filename); //Open filename
+        //perror(void);
+	}
+		
+	while (fscanf(fp,"%li %s %s %f %f",
+                &current->clockNumber,
+                &current->firstName,
+                &current->lastName,
+                &current->wage,
+                &current->hours) 
+             	&& !feof(fp))
+	{
+		current->next=(struct Employee *)malloc(sizeof(Employee));
+        current=current->next;
+    }
+    	current->next=(struct Employee *)NULL;
+        fclose(fp);
+
+        otCalc(head);
+        grossCalc(head);
+        printList(head);
+        totalAvg(head);
+}
+
+void getHours (Employee *empl)
+{
+    Employee *tmp;   /* tmp pointer value to current node */
+    
+    for(tmp = empl; tmp ; tmp = tmp->next)
+    {
+        printf ("\nEnter hours for employee %06li:  ", tmp -> clockNumber);
+        scanf ("%f", &tmp -> hours);
+    }
+}
+
+void grossCalc (Employee * empl)
+{
+    Employee *tmp;
+    
+    for(tmp = empl; tmp ; tmp = tmp->next) {
+        if (tmp -> hours >= STD_HOURS)
+            
+            tmp -> gross =
+            ((tmp -> wage) * STD_HOURS) + (OT_RATE * (tmp -> wage)) * (tmp -> overtime);
+        else
+            (tmp -> gross) = (tmp -> hours) * (tmp -> wage);
+    }
 }
 
 void otCalc (Employee *empl)
