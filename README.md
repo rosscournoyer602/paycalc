@@ -1,10 +1,8 @@
 # paycalc
-Simple C language payroll calculator program
+Simple C language payroll calculator program. Can manually provide input, or choose specially formatted files as input. The program also takes an option from the command line to skip the menu and read in a file directly.
 
-I broke this a couple years ago and have now gone back to try and fix it. Current issues are:
+./paycalc -f [filename]
 
--File input mode says it cannot open "filename", then segfaults(11), then crashes
-
--After completing manual input mode and returning to menu, further menu input causes program to exit
+Current issues are:
 
 -Several compiler warnings about incompatible pointer types
