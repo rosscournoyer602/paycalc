@@ -20,6 +20,50 @@ int menu(void) {
     else return(choice);
     }
 
+void manual(Employee *head) {
+
+    Employee *current;
+    current=head;
+    int more_data=1;
+    char answer[8];     /* to see if the user wants to add more employees */
+
+    while (more_data) {
+        
+        printf ("\nEnter employee first name: ");
+        scanf ("%s", &current->firstName);
+        
+        printf ("\nEnter employee last name: ");
+        scanf ("%s", &current->lastName);
+        
+        /* Read in Employee ID and Hourly Wage */
+        printf("\nEnter employee ID: ");
+        scanf("%li", &current->clockNumber);
+        
+        printf("\nEnter employee hourly wage: ");
+        scanf("%f", &current->wage);
+        
+        printf("\nWould you like to add another employee? (y/n): ");
+        scanf("%s", answer);
+        
+        /* Ask user if they want to add another employee */
+        if (toupper(answer[0]) != 'Y') {
+            current->next = (struct employee *) NULL;
+            more_data = 0;
+            getHours(head);
+        }
+        else {
+            /* set the next pointer of the current node to point to the new node */
+            current->next=(Employee *)malloc(sizeof(Employee));
+            /* move the current node pointer to the new node */
+            current = current->next;
+        }
+    }
+    otCalc(head);
+    grossCalc(head);
+    printList(head);
+    totalAvg(head);
+}
+
 void file(Employee *head, char *filename) {
 
     Employee *current;  /*pointer to current node*/
@@ -28,7 +72,7 @@ void file(Employee *head, char *filename) {
 
     if (!(fp=fopen(filename,"r"))){
 		printf("cannot open %s for reading\n",filename); //Open filename
-        //perror();
+        //perror(void);
 	}
 		
 	while (fscanf(fp,"%li %s %s %f %f",
@@ -74,50 +118,6 @@ void grossCalc (Employee * empl)
         else
             (tmp -> gross) = (tmp -> hours) * (tmp -> wage);
     }
-}
-
-void manual(Employee *head) {
-
-    Employee *current;
-    current=head;
-    int more_data=1;
-    char answer[8];     /* to see if the user wants to add more employees */
-
-    while (more_data) {
-        
-        printf ("\nEnter employee first name: ");
-        scanf ("%s", &current->firstName);
-        
-        printf ("\nEnter employee last name: ");
-        scanf ("%s", &current->lastName);
-        
-        /* Read in Employee ID and Hourly Wage */
-        printf("\nEnter employee ID: ");
-        scanf("%li", &current->clockNumber);
-        
-        printf("\nEnter employee hourly wage: ");
-        scanf("%f", &current->wage);
-        
-        printf("\nWould you like to add another employee? (y/n): ");
-        scanf("%s", answer);
-        
-        /* Ask user if they want to add another employee */
-        if (toupper(answer[0]) != 'Y') {
-            current->next = (struct employee *) NULL;
-            more_data = 0;
-            getHours(head);
-        }
-        else {
-            /* set the next pointer of the current node to point to the new node */
-            current->next=(Employee *)malloc(sizeof(Employee));
-            /* move the current node pointer to the new node */
-            current = current->next;
-        }
-    }
-    otCalc(head);
-    grossCalc(head);
-    printList(head);
-    totalAvg(head);
 }
 
 void otCalc (Employee *empl)
@@ -204,18 +204,19 @@ int main (int argc, char** argv)
     else
         printf ("Usage: Paycalc -f [filename]\nor\nPaycalc\n");
     
-    switch(menu()) {
-        case 1:
-          printf ("Enter file name:\n");
-          scanf ("%s", &filename[0]);
-          file(head,filename);
-          break;
-        case 2:
-          manual(head);
-          break;
-        default:
-          printf ("Invalid usage.\n");
-          break;
+    for (;;) {
+        switch(menu()) {
+            case 1:
+              printf ("Enter file name:\n");
+              scanf ("%s", &filename[0]);
+              file(head,filename);
+              break;
+            case 2:
+              manual(head);
+              break;
+            default:
+              printf ("Invalid usage.\n");
+              break;
+          }
       }
-      menu();
 }
